@@ -14,6 +14,7 @@
                    displayName="Source Files"
                    projectFiles="true">
       <itemPath>ILI9163C.c</itemPath>
+      <itemPath>i2c_master.c</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"

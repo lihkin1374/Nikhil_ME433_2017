@@ -51,17 +51,17 @@ OBJECTDIR=build/${CND_CONF}/${IMAGE_TYPE}
 DISTDIR=dist/${CND_CONF}/${IMAGE_TYPE}
 
 # Source Files Quoted if spaced
-SOURCEFILES_QUOTED_IF_SPACED=ILI9163C.c
+SOURCEFILES_QUOTED_IF_SPACED=ILI9163C.c i2c_master.c
 
 # Object Files Quoted if spaced
-OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/ILI9163C.o
-POSSIBLE_DEPFILES=${OBJECTDIR}/ILI9163C.o.d
+OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/ILI9163C.o ${OBJECTDIR}/i2c_master.o
+POSSIBLE_DEPFILES=${OBJECTDIR}/ILI9163C.o.d ${OBJECTDIR}/i2c_master.o.d
 
 # Object Files
-OBJECTFILES=${OBJECTDIR}/ILI9163C.o
+OBJECTFILES=${OBJECTDIR}/ILI9163C.o ${OBJECTDIR}/i2c_master.o
 
 # Source Files
-SOURCEFILES=ILI9163C.c
+SOURCEFILES=ILI9163C.c i2c_master.c
 
 
 CFLAGS=
@@ -106,12 +106,24 @@ ${OBJECTDIR}/ILI9163C.o: ILI9163C.c  nbproject/Makefile-${CND_CONF}.mk
 	@${RM} ${OBJECTDIR}/ILI9163C.o 
 	@${FIXDEPS} "${OBJECTDIR}/ILI9163C.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/ILI9163C.o.d" -o ${OBJECTDIR}/ILI9163C.o ILI9163C.c    -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD) 
 	
+${OBJECTDIR}/i2c_master.o: i2c_master.c  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} "${OBJECTDIR}" 
+	@${RM} ${OBJECTDIR}/i2c_master.o.d 
+	@${RM} ${OBJECTDIR}/i2c_master.o 
+	@${FIXDEPS} "${OBJECTDIR}/i2c_master.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/i2c_master.o.d" -o ${OBJECTDIR}/i2c_master.o i2c_master.c    -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD) 
+	
 else
 ${OBJECTDIR}/ILI9163C.o: ILI9163C.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}" 
 	@${RM} ${OBJECTDIR}/ILI9163C.o.d 
 	@${RM} ${OBJECTDIR}/ILI9163C.o 
 	@${FIXDEPS} "${OBJECTDIR}/ILI9163C.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/ILI9163C.o.d" -o ${OBJECTDIR}/ILI9163C.o ILI9163C.c    -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD) 
+	
+${OBJECTDIR}/i2c_master.o: i2c_master.c  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} "${OBJECTDIR}" 
+	@${RM} ${OBJECTDIR}/i2c_master.o.d 
+	@${RM} ${OBJECTDIR}/i2c_master.o 
+	@${FIXDEPS} "${OBJECTDIR}/i2c_master.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/i2c_master.o.d" -o ${OBJECTDIR}/i2c_master.o i2c_master.c    -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD) 
 	
 endif
 
