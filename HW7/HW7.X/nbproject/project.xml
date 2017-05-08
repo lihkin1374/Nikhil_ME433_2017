@@ -6,7 +6,7 @@
             <name>HW7</name>
             <creation-uuid>ab254008-74f4-44dc-b6e4-6c1af07522f3</creation-uuid>
             <make-project-type>0</make-project-type>
-            <c-extensions/>
+            <c-extensions>c</c-extensions>
             <cpp-extensions/>
             <header-extensions>h</header-extensions>
             <asminc-extensions/>
