@@ -51,6 +51,11 @@ SUBSTITUTE GOODS, TECHNOLOGY, SERVICES, OR ANY CLAIMS BY THIRD PARTIES
 #include "app.h"
 #include <stdio.h>
 #include <xc.h>
+#include <stdlib.h>
+#include<sys/attribs.h>  // __ISR macro
+#include "i2c_master.h"
+#include "ILI9163C.h"
+#include "other_functions.h"
 
 // *****************************************************************************
 // *****************************************************************************
@@ -59,9 +64,13 @@ SUBSTITUTE GOODS, TECHNOLOGY, SERVICES, OR ANY CLAIMS BY THIRD PARTIES
 // *****************************************************************************
 
 uint8_t APP_MAKE_BUFFER_DMA_READY dataOut[APP_READ_BUFFER_SIZE];
+uint8_t APP_MAKE_BUFFER_DMA_READY dataOut1[APP_READ_BUFFER_SIZE];
 uint8_t APP_MAKE_BUFFER_DMA_READY readBuffer[APP_READ_BUFFER_SIZE];
-int len, i = 0;
+int len, len1, i = 0, j = 0;
 int startTime = 0;
+int L = 14;
+signed short new_data[7];
+unsigned char data[14];
 
 // *****************************************************************************
 /* Application Data
@@ -76,6 +85,8 @@ int startTime = 0;
  */
 
 APP_DATA appData;
+#define SLAVE_ADDR 0x6B // slave address
+#define COLOR2 0x0000 // Background color for "off" pixels
 
 // *****************************************************************************
 // *****************************************************************************
@@ -331,6 +342,39 @@ void APP_Initialize(void) {
     /* Set up the read buffer */
     appData.readBuffer = &readBuffer[0];
 
+    // from IMU code
+    unsigned char data;
+    __builtin_disable_interrupts();
+
+    // set the CP0 CONFIG register to indicate that kseg0 is cacheable (0x3)
+    __builtin_mtc0(_CP0_CONFIG, _CP0_CONFIG_SELECT, 0xa4210583);
+
+    // 0 data RAM access wait states
+    BMXCONbits.BMXWSDRM = 0x0;
+
+    // enable multi vector interrupts
+    INTCONbits.MVEC = 0x1;
+
+    // disable JTAG to get pins back
+    DDPCONbits.JTAGEN = 0;
+
+    // do your TRIS and LAT commands here
+    TRISBbits.TRISB4 = 1; // make push button an input
+    TRISAbits.TRISA4 = 0; // make green LED an output
+    LATAbits.LATA4 = 1; // set green LED initially high
+
+    ANSELBbits.ANSB2 = 0; // set as digital
+    ANSELBbits.ANSB3 = 0; // set as digital
+    I2C2BRG = 233;
+    I2C2CONbits.ON = 1;
+
+    __builtin_enable_interrupts();
+
+    SPI1_init();
+    LCD_init();
+    LCD_clearScreen(BLACK);
+    init_IMU();
+
     startTime = _CP0_GET_COUNT();
 }
 
@@ -408,7 +452,7 @@ void APP_Tasks(void) {
             /* Check if a character was received or a switch was pressed.
              * The isReadComplete flag gets updated in the CDC event handler. */
 
-            if (appData.isReadComplete || _CP0_GET_COUNT() - startTime > (48000000 / 2 / 5)) {
+            if (appData.isReadComplete || _CP0_GET_COUNT() - startTime > (48000000 / 2 / 100)) {
                 appData.state = APP_STATE_SCHEDULE_WRITE;
             }
 
@@ -427,16 +471,25 @@ void APP_Tasks(void) {
             appData.isWriteComplete = false;
             appData.state = APP_STATE_WAIT_FOR_WRITE_COMPLETE;
 
-            len = sprintf(dataOut, "%d\r\n", i);
-            i++;
+
             if (appData.isReadComplete) {
-                USB_DEVICE_CDC_Write(USB_DEVICE_CDC_INDEX_0,
+                if (appData.readBuffer[0] == 'r') {
+                    for(i=0;i<100;i++){
+                    
+                    i2c_read_multiple(SLAVE_ADDR, 0x20, data, L);
+                    process_data(data, new_data, L);
+                    len = sprintf(dataOut, "index: %d \t ax: %d \t ay: %d \t az: %d \t gx: %d \t gy: %d \t gz: %d \r\n", i, new_data[4], new_data[5], new_data[6], new_data[1], new_data[2], new_data[3]);
+            
+                    USB_DEVICE_CDC_Write(USB_DEVICE_CDC_INDEX_0,
                         &appData.writeTransferHandle,
-                        appData.readBuffer, 1,
+                       dataOut, len,
                         USB_DEVICE_CDC_TRANSFER_FLAGS_DATA_COMPLETE);
+                    }
+                }
             } else {
+                dataOut[0] = 0;
                 USB_DEVICE_CDC_Write(USB_DEVICE_CDC_INDEX_0,
-                        &appData.writeTransferHandle, dataOut, len,
+                        &appData.writeTransferHandle, dataOut, 1,
                         USB_DEVICE_CDC_TRANSFER_FLAGS_DATA_COMPLETE);
                 startTime = _CP0_GET_COUNT();
             }

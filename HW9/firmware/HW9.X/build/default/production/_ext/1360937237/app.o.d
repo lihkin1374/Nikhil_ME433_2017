@@ -223,4 +223,7 @@ build/default/production/_ext/1360937237/app.o:  \
  ../../../../../../../../microchip/harmony/v1_11/framework/osal/src/osal_impl_basic.h  \
  ../../../../../../../../microchip/harmony/v1_11/framework/usb/usb_device_cdc.h  \
  ../../../../../../../../microchip/harmony/v1_11/framework/usb/usb_cdc.h  \
- ../src/app.h 
+ ../src/app.h  \
+../src/i2c_master.h  \
+../src/ILI9163C.h  \
+ ../src/other_functions.h 
