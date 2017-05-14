@@ -225,4 +225,6 @@ build/default/production/_ext/1688732426/system_exceptions.o:  \
  ../../../../../../../../microchip/harmony/v1_11/framework/usb/usb_cdc.h  \
  ../src/app.h  \
 ../src/system_config/default/system_definitions.h  \
+ ../src/imu.h  \
+../src/i2c.h  \
  ../../../../../../../../microchip/harmony/v1_11/framework/system/debug/sys_debug.h 

@@ -224,4 +224,6 @@ build/default/production/_ext/1688732426/system_init.o:  \
  ../../../../../../../../microchip/harmony/v1_11/framework/usb/usb_device_cdc.h  \
  ../../../../../../../../microchip/harmony/v1_11/framework/usb/usb_cdc.h  \
  ../src/app.h  \
-../src/system_config/default/system_definitions.h 
+../src/system_config/default/system_definitions.h  \
+ ../src/imu.h  \
+../src/i2c.h 
