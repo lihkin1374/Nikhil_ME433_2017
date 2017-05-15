@@ -225,4 +225,4 @@ build/default/production/_ext/1360937237/app.o:  \
  ../../../../../../../../microchip/harmony/v1_11/framework/usb/usb_cdc.h  \
  ../src/app.h  \
 ../src/imu.h  \
-../src/i2c.h 
+../src/i2c_master_noint.h 

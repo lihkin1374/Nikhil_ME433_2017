@@ -224,4 +224,4 @@ build/default/production/_ext/639803181/sys_clk_static.o:  \
  ../../../../../../../../microchip/harmony/v1_11/framework/usb/usb_cdc.h  \
  ../src/app.h  \
 ../src/imu.h  \
-../src/i2c.h 
+../src/i2c_master_noint.h 
