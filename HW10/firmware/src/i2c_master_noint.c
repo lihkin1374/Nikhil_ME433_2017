@@ -1,15 +1,12 @@
+#include<xc.h>
 // I2C Master utilities, 100 kHz, using polling rather than interrupts
-// The functions must be called in the correct order as per the I2C protocol
+// The functions must be callled in the correct order as per the I2C protocol
 // Change I2C1 to the I2C channel you are using
 // I2C pins need pull-up resistors, 2k-10k
 
-#include "i2c_master_noint.h"
-
 void i2c_master_setup(void) {
-  I2C2BRG = 233; //some number for 100kHz;
-                 // I2CBRG = [1/(2*Fsck) - PGD]*Pblck - 2 
-                 // PGD = 104 ns for PIC32MX1XX/2XX family
-                 // using 48 MHz, I2CBRG = 235
+  I2C2BRG = 0xE9;            // I2CBRG = [1/(2*Fsck) - PGD]*Pblck - 2 ([1/(2*100kHz) - 104ns]*48MHz - 2 = 233 = )
+                                    // look up PGD for your PIC32 (104ns))
   I2C2CONbits.ON = 1;               // turn on the I2C2 module
 }
 
