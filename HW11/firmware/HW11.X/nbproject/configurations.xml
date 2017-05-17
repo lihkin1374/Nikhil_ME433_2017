@@ -100,8 +100,6 @@
           <itemPath>../../../../../../../../microchip/harmony/v1_11/framework/usb/usb_device_cdc.h</itemPath>
         </logicalFolder>
       </logicalFolder>
-      <itemPath>../src/i2c_master_noint.h</itemPath>
-      <itemPath>../src/ILI9163C.h</itemPath>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"
@@ -172,8 +170,6 @@
           </logicalFolder>
         </logicalFolder>
       </logicalFolder>
-      <itemPath>../src/ILI9163C.c</itemPath>
-      <itemPath>../src/i2c_master_noint.c</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
@@ -182,8 +178,11 @@
     </logicalFolder>
   </logicalFolder>
   <sourceRootList>
+    <Elem>../src</Elem>
     <Elem>../../../../../../microchip/harmony/v1_11</Elem>
-    <Elem>..</Elem>
+    <Elem>..\src</Elem>
+    <Elem>..\src\default</Elem>
+    <Elem>..\src\system_config\default</Elem>
   </sourceRootList>
   <projectmakefile>Makefile</projectmakefile>
   <confs>
@@ -195,7 +194,7 @@
         <targetPluginBoard></targetPluginBoard>
         <platformTool>PICkit3PlatformTool</platformTool>
         <languageToolchain>XC32</languageToolchain>
-        <languageToolchainVersion>1.42</languageToolchainVersion>
+        <languageToolchainVersion>1.40</languageToolchainVersion>
         <platform>3</platform>
       </toolsSet>
       <compileType>
