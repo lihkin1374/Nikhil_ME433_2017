@@ -19,6 +19,7 @@ import android.view.TextureView;
 import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.SeekBar;
+import android.widget.SeekBar.OnSeekBarChangeListener;
 
 import java.io.IOException;
 
@@ -36,8 +37,10 @@ public class MainActivity extends Activity implements TextureView.SurfaceTexture
     private Canvas canvas = new Canvas(bmp);
     private Paint paint1 = new Paint();
     private TextView mTextView;
+    private SeekBar myControl;
 
     static long prevtime = 0; // for FPS calculation
+    int thresh = 0; // comparison value
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,6 +48,8 @@ public class MainActivity extends Activity implements TextureView.SurfaceTexture
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON); // keeps the screen from turning off
 
         mTextView = (TextView) findViewById(R.id.cameraStatus);
+        myControl = (SeekBar) findViewById(R.id.seek1);
+        setMyControlListener();
 
         // see if the app has permission to use the camera
         ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.CAMERA}, 1);
@@ -64,6 +69,28 @@ public class MainActivity extends Activity implements TextureView.SurfaceTexture
             mTextView.setText("no camera permissions");
         }
 
+    }
+
+    private void setMyControlListener() {
+        myControl.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
+
+            int progressChanged = 0;
+
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                progressChanged = progress;
+                thresh = progress; // update color detection threshold
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
     }
 
     public void onSurfaceTextureAvailable(SurfaceTexture surface, int width, int height) {
@@ -98,22 +125,23 @@ public class MainActivity extends Activity implements TextureView.SurfaceTexture
         // every time there is a new Camera preview frame
         mTextureView.getBitmap(bmp);
 
+
         final Canvas c = mSurfaceHolder.lockCanvas();
         if (c != null) {
-            int thresh = 0; // comparison value
             int[] pixels = new int[bmp.getWidth()]; // pixels[] is the RGBA data
-            int startY = 200; // which row in the bitmap to analyze to read
-            bmp.getPixels(pixels, 0, bmp.getWidth(), 0, startY, bmp.getWidth(), 1);
+            for(int startY = 0; startY < bmp.getHeight(); startY = startY + 5){
+                bmp.getPixels(pixels, 0, bmp.getWidth(), 0, startY, bmp.getWidth(), 1);
 
-            // in the row, see if there is more green than red
-            for (int i = 0; i < bmp.getWidth(); i++) {
-                if ((green(pixels[i]) - red(pixels[i])) > thresh) {
-                    pixels[i] = rgb(0, 255, 0); // over write the pixel with pure green
+                // in the row, see if there is more green than red
+                for (int i = 0; i < bmp.getWidth(); i++) {
+                    if ((green(pixels[i]) - red(pixels[i])) > thresh) {
+                        pixels[i] = rgb(0, 255, 0); // over write the pixel with pure green
+                    }
                 }
-            }
 
-            // update the row
-            bmp.setPixels(pixels, 0, bmp.getWidth(), 0, startY, bmp.getWidth(), 1);
+                // update the row
+                bmp.setPixels(pixels, 0, bmp.getWidth(), 0, startY, bmp.getWidth(), 1);
+            }
         }
 
         // draw a circle at some position
