@@ -100,6 +100,8 @@
           <itemPath>../../../../../../../../microchip/harmony/v1_11/framework/usb/usb_device_hid.h</itemPath>
         </logicalFolder>
       </logicalFolder>
+      <itemPath>../src/imu.h</itemPath>
+      <itemPath>../src/i2c_master_noint.h</itemPath>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"
@@ -169,6 +171,8 @@
           </logicalFolder>
         </logicalFolder>
       </logicalFolder>
+      <itemPath>../src/i2c_master_noint.c</itemPath>
+      <itemPath>../src/imu.c</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
